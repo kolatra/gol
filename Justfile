@@ -1,5 +1,7 @@
 make:
-    gcc -o sdl main.c `sdl2-config --cflags --libs`
+    gcc -Wall -Werror -g -o sdl main.c `sdl2-config --cflags --libs`
+
+run: make
     ./sdl
     rm sdl
 

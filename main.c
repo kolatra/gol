@@ -4,15 +4,14 @@
 #include <stdbool.h>
 
 int main(int argc, char** argv) {
+    uint16_t scale = 1;
     const uint16_t pixel_size = 12;
     const uint16_t video_width = 64;
-    const uint16_t video_height = 32;
+    const uint16_t video_height = 48;
     const uint16_t resolution = video_width * video_height;
 
-    SDL_Rect pixels[resolution];
-    uint16_t scale = 1;
-
-    uint8_t board[64 * 32] = {
+    uint8_t new_board[64 * 48] = {0};
+    uint8_t board[64 * 48] = {
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -40,6 +39,22 @@ int main(int argc, char** argv) {
         0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -80,6 +95,26 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    SDL_SetRenderDrawColor(renderer, 198, 198, 255, 255);
+    for (int i = 0; i < sizeof(board); i++) {
+        if (board[i] == 0) continue;
+
+        int x = i % video_width;
+        int y = (i / video_width) % video_height;
+
+        SDL_Rect pixel;
+        pixel.w = pixel_size * scale;
+        pixel.h = pixel_size * scale;
+        pixel.x = x * pixel_size * scale;
+        pixel.y = y * pixel_size * scale;
+
+        SDL_RenderFillRect(renderer, &pixel);
+    }
+
+    SDL_RenderPresent(renderer);
+
+    bool pause = true;
+    bool active = false;
     bool running = true;
     SDL_Event e;
     while (running) {
@@ -102,6 +137,14 @@ int main(int argc, char** argv) {
                         scale--;
                     }
 
+                    if (e.key.keysym.sym == SDLK_SPACE) {
+                        pause = !pause;
+                    }
+
+                    if (e.key.keysym.sym == SDLK_RIGHT) {
+                        active = true;
+                    }
+
                     if (scale < 1) {
                         scale = 1;
                     }
@@ -111,7 +154,10 @@ int main(int argc, char** argv) {
                 case SDL_MOUSEBUTTONDOWN:
                     if (e.button.button == SDL_BUTTON_LEFT) {
                         SDL_GetMouseState(&e.button.x, &e.button.y);
-                        printf("x: %d, y: %d\n", e.button.x, e.button.y);
+
+                        int x = e.button.x / (pixel_size * scale);
+                        int y = e.button.y / (pixel_size * scale);
+                        printf("x: %d, y: %d\n", x, y);
                     }
                     break;
             }
@@ -120,25 +166,59 @@ int main(int argc, char** argv) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        // Setup the default board
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         for (int i = 0; i < sizeof(board); i++) {
-            if (board[i] == 0) continue;
-
-
             int x = i % video_width;
             int y = (i / video_width) % video_height;
 
-            pixels[i].w = pixel_size * scale;
-            pixels[i].h = pixel_size * scale;
-            pixels[i].x = x * pixel_size * scale;
-            pixels[i].y = y * pixel_size * scale;
+            if (board[i] == 1) {
+                SDL_SetRenderDrawColor(renderer, 198, 198, 255, 255);
+            } else {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            }
 
-            SDL_RenderFillRect(renderer, &pixels[i]);
+            SDL_Rect pixel;
+            pixel.w = pixel_size * scale;
+            pixel.h = pixel_size * scale;
+            pixel.x = x * pixel_size * scale;
+            pixel.y = y * pixel_size * scale;
+
+            SDL_RenderFillRect(renderer, &pixel);
         }
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(500);
+
+        if (!pause || active) {
+            for (int i = 0; i < sizeof(board); i++) {
+                bool set = board[i] == 1;
+                int x = i % video_width;
+                int y = (i / video_width) % video_height;
+
+                int neighbors = 0;
+                if (board[(x - 1) + (y - 1) * video_width] == 1) neighbors++;
+                if (board[(x - 1) + (y + 0) * video_width] == 1) neighbors++;
+                if (board[(x - 1) + (y + 1) * video_width] == 1) neighbors++;
+                if (board[(x + 0) + (y - 1) * video_width] == 1) neighbors++;
+                if (board[(x + 0) + (y + 1) * video_width] == 1) neighbors++;
+                if (board[(x + 1) + (y - 1) * video_width] == 1) neighbors++;
+                if (board[(x + 1) + (y + 0) * video_width] == 1) neighbors++;
+                if (board[(x + 1) + (y + 1) * video_width] == 1) neighbors++;
+
+                if ((neighbors == 2 || neighbors == 3) && set) {
+                    new_board[i] = 1;
+                } else if (neighbors == 3 && !set) {
+                    new_board[i] = 1;
+                } else if (neighbors > 3 || neighbors < 2) {
+                    new_board[i] = 0;
+                } else {
+                    new_board[i] = 0;
+                }
+            }
+            
+            memcpy(&board, &new_board, sizeof(board));
+            active = false;
+        }
+
+        SDL_Delay(10);
     }
     
     // cleanup
